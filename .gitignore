@@ -1,2 +1,5 @@
 *.png
 *.pdf
+__pycache__
+build
+*.spec
