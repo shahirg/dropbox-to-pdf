@@ -1,4 +1,5 @@
 
+from pydoc import source_synopsis
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -40,21 +41,25 @@ if __name__ == "__main__":
     html = driver.find_element(By.TAG_NAME,'html')
     # html.send_keys(Keys.PAGE_DOWN)
     sleep(5)
-    imgs = []
-    for i in range(1, num_slides+1):
+    
+    img_sources = []
+    for i in range(0, num_slides):
+        count = 0
+        if(i == 15 and count ==10):
+            sleep(200)
         while(True):
             try:
                 print(i)
-                img = driver.find_element(By.XPATH, f"(//img[@alt='{pdf_name}'])[{i}]")
-                imgs.append(img)
+                img = driver.find_element(By.XPATH, f"//li[@data-index='{i}']//img")
+                img_sources.append(img.get_attribute('src'))
+            
                 break
             except NoSuchElementException:
                 html.send_keys(Keys.PAGE_DOWN)
+                sleep(.5)
 
-    print(len(imgs))
-    for i,img in enumerate(imgs):
-        src = img.get_attribute('src')
-        print(src)
+    
+    for i,src in enumerate(img_sources):
         urllib.request.urlretrieve(src, f'{path}slide{i}.png')
         sleep(.5)
     # //img[@alt='Lec-1_Outline.pdf']
