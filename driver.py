@@ -25,6 +25,10 @@ if __name__ == "__main__":
         print(usage)
         sys.exit(1)
     
+    try:
+        path = (sys.argv)[3]
+    except IndexError:
+        path = "C:\\Users\\shahi\\Downloads\\"
     # get pdf name
     pdf_name = url.split('.pdf')[0][::-1].split('/')[0][::-1] + '.pdf'
     print(pdf_name)
@@ -46,24 +50,24 @@ if __name__ == "__main__":
                 break
             except NoSuchElementException:
                 html.send_keys(Keys.PAGE_DOWN)
-                
+
     print(len(imgs))
     for i,img in enumerate(imgs):
         src = img.get_attribute('src')
         print(src)
-        urllib.request.urlretrieve(src, f'slide{i}.png')
+        urllib.request.urlretrieve(src, f'{path}slide{i}.png')
         sleep(.5)
     # //img[@alt='Lec-1_Outline.pdf']
 
     # close driver
     driver.close()
 
-    imgs =[f"slide{i}.png" for i in range(num_slides)]
+    imgs =[f"{path}slide{i}.png" for i in range(num_slides)]
     
     # create pdf
-    with open(pdf_name, "wb") as f:
+    with open(f"{path}{pdf_name}", "wb") as f:
         f.write(img2pdf.convert(imgs))
     
     # purge image files
     for i in range(num_slides):
-        os.remove(f"slide{i}.png")
+        os.remove(f"{path}slide{i}.png")
