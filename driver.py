@@ -49,10 +49,8 @@ if __name__ == "__main__":
             sleep(200)
         while(True):
             try:
-                print(i)
                 img = driver.find_element(By.XPATH, f"//li[@data-index='{i}']//img")
                 img_sources.append(img.get_attribute('src'))
-            
                 break
             except NoSuchElementException:
                 html.send_keys(Keys.PAGE_DOWN)
@@ -72,6 +70,7 @@ if __name__ == "__main__":
     # create pdf
     with open(f"{path}{pdf_name}", "wb") as f:
         f.write(img2pdf.convert(imgs))
+        print(f'{pdf_name} created at {path}')
     
     # purge image files
     for i in range(num_slides):
